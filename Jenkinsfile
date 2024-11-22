@@ -2,12 +2,12 @@ pipeline {
     agent any
     environment {
         DOCKER_HUB_CREDENTIALS = credentials('credentials')
-        DOCKER_REPO = 'kishorekannan23/dev'
+        DOCKER_REPO = 'kishorekannan23/prod'
     }
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'dev', url: 'https://github.com/kishorekannanc/last-time.git'
+                git branch: 'master', url: 'https://github.com/kishorekannanc/last-time.git'
             }
         }
         stage('Build Docker Image') {
@@ -37,4 +37,3 @@ pipeline {
         }
     }
 }
-
