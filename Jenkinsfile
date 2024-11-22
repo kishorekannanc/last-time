@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'master', url: 'https://github.com/kishorekannanc/last-time.git'
+                git branch: 'main', url: 'https://github.com/kishorekannanc/last-time.git'
             }
         }
         stage('Build Docker Image') {
@@ -18,15 +18,16 @@ pipeline {
             }
         }
         stage('Push to Docker Hub') {
-            steps {
-                script {
-                    sh '''
-                    echo $DOCKER_HUB_CREDENTIALS_PSW | docker login -u $DOCKER_HUB_CREDENTIALS_USR --password-stdin
-                    docker push $DOCKER_REPO:latest
-                    '''
-                }
-            }
+    steps {
+        withCredentials([usernamePassword(credentialsId: 'credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+            sh '''
+            echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+            docker push kishorekannan23/prod:latest
+            '''
         }
+    }
+}
+
     }
     post {
         success {
